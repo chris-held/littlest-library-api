@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180415150450) do
+ActiveRecord::Schema.define(version: 20180416172423) do
 
   create_table "libraries", force: :cascade do |t|
     t.string "address"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(version: 20180415150450) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "library_flags", force: :cascade do |t|
+    t.integer "library_id"
+    t.boolean "is_active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["library_id"], name: "index_library_flags_on_library_id"
   end
 
 end

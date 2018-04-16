@@ -1,3 +1,4 @@
 class Library < ApplicationRecord
-  validates_presence_of :lat, :lon, :address, :city, :state, :zip
+  has_many :library_flags, dependent: :destroy
+  validates_presence_of :lat, :lon
 end

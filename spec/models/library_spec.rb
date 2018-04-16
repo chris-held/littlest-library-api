@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Library, type: :model do
+  # associations
+  it { should have_many(:library_flags).dependent(:destroy)}
   # validations
   it {should validate_presence_of(:lat)}
   it {should validate_presence_of(:lon)}
-  it {should validate_presence_of(:address)}
-  it {should validate_presence_of(:city)}
-  it {should validate_presence_of(:state)}
-  it {should validate_presence_of(:zip)}
 end
