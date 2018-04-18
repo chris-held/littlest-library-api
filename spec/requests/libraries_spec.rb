@@ -79,6 +79,19 @@ RSpec.describe 'Libraries API', type: :request do
           .to match(/Validation failed: Lon can't be blank/)
       end
     end
+
+    context 'when the request is a potential duplicated' do
+      before { post '/libraries', params: { name: 'too close', lat: 0, lon: 0 } }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match(/A similar library exists nearby/)
+      end
+    end
   end
 
   # Test suite for PUT /libraries/:id
