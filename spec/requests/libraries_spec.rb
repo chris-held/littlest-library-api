@@ -53,13 +53,17 @@ RSpec.describe 'Libraries API', type: :request do
   # Test suite for POST /todos
   describe 'POST /libraries' do
     # valid payload
-    let(:valid_attributes) { { lat: 43.33, lon: -87.5, name: 'Testbrary' } }
+    let(:valid_attributes) { { lat: 43.765285, lon: -87.7015775, name: 'Testbrary' } }
 
     context 'when the request is valid' do
       before { post '/libraries', params: valid_attributes }
 
       it 'creates a library' do
         expect(json['name']).to eq('Testbrary')
+        expect(json['address']).to eq('1900-1998 North 1st Street')
+        expect(json['city']).to eq('Sheboygan')
+        expect(json['state']).to eq('WI')
+        expect(json['zip']).to eq('53081')
       end
 
       it 'returns status code 201' do
@@ -80,8 +84,8 @@ RSpec.describe 'Libraries API', type: :request do
       end
     end
 
-    context 'when the request is a potential duplicated' do
-      before { post '/libraries', params: { name: 'too close', lat: 0, lon: 0 } }
+    context 'when the request is a potential duplicate' do
+      before { post '/libraries', params: { name: 'too close', lat: 37.791821, lon: -122.394679 } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
