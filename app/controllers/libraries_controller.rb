@@ -1,6 +1,5 @@
 class LibrariesController < ApplicationController
   before_action :set_library, only: [:show, :update]
-  before_action :reverse_geocode_address, only: [:create]
 
   # GET /todos
   def index
@@ -57,7 +56,7 @@ class LibrariesController < ApplicationController
       @latlng = params[:lat] + "," + params[:lon]
       res=Geokit::Geocoders::GoogleGeocoder.reverse_geocode @latlng
       if !res.success
-        json_response({ message: "Could not reverse geocode coordinates" }, :unprocessable_entity)
+        json_response({ :message => "Could not reverse geocode coordinates" }, :unprocessable_entity)
       else
         @address = {:address => res.street_address, :city => res.city, :state => res.state, :zip => res.zip}
         # puts @address.to_yaml
