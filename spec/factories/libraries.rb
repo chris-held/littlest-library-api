@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :library do
     name { Faker::Pokemon.name }
-    lat { Faker::Address.latitude }
-    lon { Faker::Address.longitude }
+    lat { 0 }
+    lon { 0 }
   end
 end

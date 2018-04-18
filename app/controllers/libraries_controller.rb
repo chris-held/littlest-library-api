@@ -11,12 +11,19 @@ class LibrariesController < ApplicationController
 
   # POST /todos
   def create
-    @library = Library.create!(library_params)
     # TODO - will need to geocode here
-    # TODO - do not create if another
+    # do not create if another
     # library exists within ~100 feet of the
     # passed in lat / lon
-    json_response(@library, :created)
+    # 100 feet is approximately 0.018 miles
+    @nearby = Library.within(0.018, :origin => [params[:lat], params[:lon]])
+    if @nearby.blank?
+      @library = Library.create!(library_params)
+      json_response(@library, :created)
+    else
+      json_response({ message: "A similar library exists nearby" }, :unprocessable_entity)
+    end
+    
   end
 
   # GET /todos/:id
