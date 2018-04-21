@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180415150450) do
+ActiveRecord::Schema.define(version: 20180416172423) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "libraries", force: :cascade do |t|
     t.string "address"
@@ -24,4 +27,13 @@ ActiveRecord::Schema.define(version: 20180415150450) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "library_flags", force: :cascade do |t|
+    t.bigint "library_id"
+    t.boolean "is_active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["library_id"], name: "index_library_flags_on_library_id"
+  end
+
+  add_foreign_key "library_flags", "libraries"
 end
