@@ -6,7 +6,7 @@ class LibrariesController < ApplicationController
     # TODO - this should accept lat and lng
     # and get libraries within 25 miles
     unless params[:lat].nil? or params[:lon].nil?
-      @libraries = Library.within(25, :origin => [params[:lat], params[:lon]]).order('distance DESC').all
+      @libraries = Library.within(25, :origin => [params[:lat], params[:lon]]).all
     else
       @libraries = Library.all
     end
