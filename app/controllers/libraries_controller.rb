@@ -5,7 +5,12 @@ class LibrariesController < ApplicationController
   def index
     # TODO - this should accept lat and lng
     # and get libraries within 25 miles
-    @libraries = Library.all
+    unless params[:lat].nil? or params[:lon].nil?
+      @libraries = Library.within(25, :origin => [params[:lat], params[:lon]]).order('distance DESC').all
+    else
+      @libraries = Library.all
+    end
+    
     json_response(@libraries)
   end
 
