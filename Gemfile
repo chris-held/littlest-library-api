@@ -32,6 +32,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 gem 'carrierwave', '~> 1.0'
 gem 'carrierwave-base64'
+gem 'cloudinary'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
