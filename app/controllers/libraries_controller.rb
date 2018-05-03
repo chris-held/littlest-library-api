@@ -47,8 +47,7 @@ class LibrariesController < ApplicationController
 
   def library_params
     # whitelist params
-    # TODO - this will probably need to be different
-    params.permit(:name, :lat, :lon)
+    params.permit(:name, :lat, :lon, :image)
   end
 
   def set_library
