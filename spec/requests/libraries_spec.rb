@@ -3,13 +3,15 @@ require 'rails_helper'
 
 RSpec.describe 'Libraries API', type: :request do
   # initialize test data 
+  let(:user) { create(:user) }
   let!(:libraries) { create_list(:library, 10) }
   let(:library_id) { libraries.first.id }
+  let(:headers) { valid_headers }
 
   # Test suite for GET /todos
   describe 'GET /libraries' do
     # make HTTP get request before each example
-    before { get '/libraries' }
+    before { get '/libraries', headers: headers }
 
     it 'returns libraries' do
       # Note `json` is a custom helper to parse JSON responses
@@ -24,7 +26,7 @@ RSpec.describe 'Libraries API', type: :request do
 
   # Test suite for GET /libraries/:id
   describe 'GET /libraries/:id' do
-    before { get "/libraries/#{library_id}" }
+    before { get "/libraries/#{library_id}", headers: headers }
 
     context 'when the record exists' do
       it 'returns the library' do
@@ -53,10 +55,12 @@ RSpec.describe 'Libraries API', type: :request do
   # Test suite for POST /todos
   describe 'POST /libraries' do
     # valid payload
-    let(:valid_attributes) { { lat: 43.765285, lon: -87.7015775, name: 'Testbrary' } }
+    let(:valid_attributes) { { lat: "43.765285", lon: "-87.7015775", name: 'Testbrary' }.to_json }
 
     context 'when the request is valid' do
-      before { post '/libraries', params: valid_attributes }
+      before do
+        post '/libraries', params: valid_attributes, headers: headers
+      end
 
       it 'creates a library' do
         expect(json['name']).to eq('Testbrary')
@@ -72,8 +76,9 @@ RSpec.describe 'Libraries API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/libraries', params: { name: 'missing required stuff', lat: 43.3 } }
-
+      before do
+         post '/libraries', params: { name: 'missing required stuff', lat: 43.3 }.to_json, headers: headers
+      end
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
@@ -85,8 +90,9 @@ RSpec.describe 'Libraries API', type: :request do
     end
 
     context 'when the request is a potential duplicate' do
-      before { post '/libraries', params: { name: 'too close', lat: 37.791821, lon: -122.394679 } }
-
+      before do
+        post '/libraries', params: { name: 'too close', lat: 37.791821, lon: -122.394679 }.to_json, headers: headers
+      end 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
@@ -101,10 +107,10 @@ RSpec.describe 'Libraries API', type: :request do
   # Test suite for PUT /libraries/:id
   # this will eventually only support updating images
   describe 'PUT /libraries/:id' do
-    let(:valid_attributes) { { name: 'Testing Updates' } }
+    let(:valid_attributes) { { name: 'Testing Updates' }.to_json }
 
     context 'when the record exists' do
-      before { put "/libraries/#{library_id}", params: valid_attributes }
+      before { put "/libraries/#{library_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
